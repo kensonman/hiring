@@ -1,0 +1,16 @@
+version: "3.3"
+services:
+   webapp:
+      image: python:3
+      container_name: "webapp.${HOST}"
+      env_file:
+         - ./.env
+      volumes:
+         - ./src:/usr/src/app:rw
+         - logs:/usrc/app/logs:rw
+      ports:
+         - 5000:5000
+      working_dir: /usr/src/app
+      command: pip install -r /usr/src/app/requirements.txt && python ./manage.py migrate && python ./manage.py collectstatic && python ./manage.py runserver 5000
+volumes:
+    logs: {}
