@@ -48,9 +48,17 @@ class ReadingView(APIView):
 
    def post(self, req, format=None):
       data=req.data
-      #TODO: idempotency-check
       with transaction.atomic():
-         History(data=data, ipaddr=self.getClientIP(req)).save() #Save the history
+         #Idempotency check
+         hid=req.header.get('Idempotency-Key', uuid.uuid4())
+         history=None
+         try:
+            history=History.objects.get(id=hid)
+         except History.DoesNotExist:
+            pass
+         history=History(data=data, ipaddr=self.getClientIP(req))#Save the history
+         history.save()
+
          ids=[]
          parent=None
          target=getObj(Reading, id=data['id']) if 'id' in data else Reading()
@@ -70,6 +78,9 @@ class ReadingView(APIView):
             target.registerId=rd['registerId']
             target.value=int(rd['value'])
             target.save()
-            if not parent: parent=Reading.objects.get(id=target.id)
+            if not parent:
+               parent=Reading.objects.get(id=target.id)
+               history.stored=parent
+               history.save()
             ids.append(str(target.id))
          return Response(ids)

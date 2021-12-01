@@ -115,3 +115,5 @@ class ReadingTestCases(TestCase):
       self.assertTrue(200 <= rep.status_code < 300)#Status code
       self.assertIsInstance(rep.data, list)
       self.assertTrue(len(rep.data)==1)
+
+
