@@ -1,10 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
 
 #Init the environment
 init()
 {
    echo "Initializes the environment..."
+   apk add gettext
    # Install the requirements/dependencies
    pip install -r /usr/src/app/requirements.txt 
 
@@ -13,6 +14,16 @@ init()
 
    # Initializes all the static file(s)... It may no be useful in this project, but keep it as a good practice.
    python ./manage.py collectstatic --noinput 
+
+   # Create the admin user by default
+   echo "from django.contrib.auth import get_user_model; 
+User = get_user_model();
+try:
+   User.objects.get(username='admin')
+except User.DoesNotExist:
+   print('Creating the superuser: admin/changeme ...')
+   User.objects.create_superuser('admin', 'admin@kenson.idv.hk', 'changeme')
+" | python manage.py shell
 }
 
 run()

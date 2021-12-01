@@ -1,0 +1,147 @@
+# The translation of meter
+# Copyright (C) 2021
+# This file is distributed under the same license as the meter package.
+# Kenson Man <kenson@kenson.idv.hk>, 2021
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-12-01 15:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: models.py:30
+msgid "meter.Reading"
+msgstr "Reading"
+
+#: models.py:31
+msgid "meter.Readings"
+msgstr "Readings"
+
+#: models.py:36
+msgid "meter.types.electric"
+msgstr "Electric"
+
+#: models.py:37
+msgid "meter.types.gas"
+msgstr "GAS"
+
+#: models.py:40
+msgid "meter.Reading.id"
+msgstr "ID"
+
+#: models.py:40
+msgid "meter.Reading.id.helptext"
+msgstr "The primary key of the reading"
+
+#: models.py:41
+msgid "meter.Reading.customerId"
+msgstr "Customer ID"
+
+#: models.py:41
+msgid "meter.Reading.customerId.helptext"
+msgstr "The customer id is a unique identifier for a customer, it must always be globally unique"
+
+#: models.py:42
+msgid "meter.Reading.serialNumber"
+msgstr "Serial Number"
+
+#: models.py:42
+msgid "meter.Reading.serialNumber.helptext"
+msgstr "Serial Number is the meter serial number is used to identify a meter, this number should be unique, however uniqueness cannot be assured."
+
+#: models.py:43
+msgid "meter.Reading.meterType"
+msgstr "Meter Type"
+
+#: models.py:43
+msgid "meter.Reading.meterType.helptext"
+msgstr "The type of the meter readering. It can be Electric (MPAN) or GAS (MPRN)."
+
+#: models.py:44
+msgid "meter.Reading.readingType"
+msgstr "Reading Type"
+
+#: models.py:44
+msgid "meter.Reading.readingType.helptext"
+msgstr "In example, it can be 'ANYTIME' or 'NIGHT'."
+
+#: models.py:45
+msgid "meter.Reading.registerId"
+msgstr "Register ID"
+
+#: models.py:45
+msgid "meter.Reading.registerId.helptext"
+msgstr "The Register ID is the serial number on the register for that particular register. It can be used to uniquely identify a register, but not an energy supply."
+
+#: models.py:46
+msgid "meter.Reading.value"
+msgstr "Value"
+
+#: models.py:46
+msgid "meter.Reading.value.helptext"
+msgstr "The phical value"
+
+#: models.py:47
+msgid "meter.Reading.readDate"
+msgstr "Read Date"
+
+#: models.py:47
+msgid "meter.Reading.readDate.helptext"
+msgstr "The read date that user provided."
+
+#: models.py:60
+msgid "meter.History"
+msgstr "History"
+
+#: models.py:61
+msgid "meter.Histories"
+msgstr "Histories"
+
+#: models.py:63
+msgid "meter.History.id"
+msgstr "ID"
+
+#: models.py:63
+msgid "meter.History.id.helptext"
+msgstr "The primary key of the history. It is also used as idempotency-check."
+
+#: models.py:64
+msgid "meter.History.data"
+msgstr "Raw-Data"
+
+#: models.py:64
+msgid "meter.History.data.helptext"
+msgstr "The raw-data that user submitted."
+
+#: models.py:65
+msgid "meter.History.ipaddr"
+msgstr "IPAddress"
+
+#: models.py:65
+msgid "meter.History.ipaddr.helptext"
+msgstr "The IPAddress that user are submitted"
+
+#: models.py:66
+msgid "meter.History.date"
+msgstr "Date"
+
+#: models.py:66
+msgid "meter.History.date.helptext"
+msgstr "The date of the user submitted"
+
+#: models.py:67
+msgid "meter.History.stored"
+msgstr "Target"
+
+#: models.py:67
+msgid "meter.History.stored.helptext"
+msgstr "The target data that the user physical stored. If the data was delete, it will set to None"
