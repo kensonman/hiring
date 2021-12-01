@@ -41,9 +41,11 @@ class Reading(models.Model):
    customerId     = models.CharField(max_length=50, verbose_name=_('meter.Reading.customerId'), help_text=_('meter.Reading.customerId.helptext'))
    serialNumber   = models.CharField(max_length=50, verbose_name=_('meter.Reading.serialNumber'), help_text=_('meter.Reading.serialNumber.helptext'))
    meterType      = models.IntegerField(choices=METER_TYPES, default=METER_ELECTRIC, verbose_name=_('meter.Reading.meterType'), help_text=_('meter.Reading.meterType.helptext'))
+   meterPointNumber= models.CharField(max_length=50, verbose_name=_('meter.Reading.meterPointNumber'), help_text=_('meter.Reading.meterPointNumber.helptext'))
    readingType    = models.CharField(max_length=20, verbose_name=_('meter.Reading.readingType'), help_text=_('meter.Reading.readingType.helptext'))
    registerId     = models.CharField(max_length=20, verbose_name=_('meter.Reading.registerId'), help_text=_('meter.Reading.registerId.helptext'))
    value          = models.IntegerField(verbose_name=_('meter.Reading.value'), help_text=_('meter.Reading.value.helptext'))
+   parent         = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE, verbose_name=_('meter.Reading.parent'), help_text=_('meter.Reading.parent.helptext'))
    readDate       = models.DateTimeField(auto_now=True, verbose_name=_('meter.Reading.readDate'), help_text=_('meter.Reading.readDate.helptext'))
 
 class History(models.Model):

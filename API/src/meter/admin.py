@@ -8,12 +8,12 @@ from .models import *
 
 @admin.register(Reading)
 class ReadingAdmin(admin.ModelAdmin):
-   fields         = ('id', 'customerId', 'serialNumber', 'meterType', 'readingType', 'registerId', 'value', 'readDate')
-   list_display   = ('id', 'customerId', 'serialNumber', 'meterType', 'readingType', 'registerId', 'value', 'readDate')
-   list_filter    = ('customerId', 'serialNumber', 'meterType', 'readingType', 'registerId', 'readDate')
+   fields         = ('id', 'customerId', 'serialNumber', 'meterType', 'meterPointNumber', 'readingType', 'registerId', 'value', 'parent', 'readDate')
+   list_display   = ('id', 'customerId', 'serialNumber', 'meterType', 'meterPointNumber', 'readingType', 'registerId', 'value', 'parent', 'readDate')
+   list_filter    = ('meterType', 'readingType', 'readDate')
    ordering       = ('-readDate',)
-   readonly_fields=('id', 'readDate')
-   search_field   =('id', 'customerId', 'serialNumber', 'meterType', 'readingType', 'registerId', 'value', 'readDate' )
+   readonly_fields=('id', 'readDate', 'parent',)
+   search_field   =('id', 'customerId', 'serialNumber', 'meterPointNumber', 'registerId', 'value', 'readDate', 'parnet')
 
 @admin.register(History)
 class HistoryAdmin(admin.ModelAdmin):
