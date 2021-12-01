@@ -46,7 +46,7 @@ class Reading(models.Model):
    registerId     = models.CharField(max_length=20, verbose_name=_('meter.Reading.registerId'), help_text=_('meter.Reading.registerId.helptext'))
    value          = models.IntegerField(verbose_name=_('meter.Reading.value'), help_text=_('meter.Reading.value.helptext'))
    parent         = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE, verbose_name=_('meter.Reading.parent'), help_text=_('meter.Reading.parent.helptext'))
-   readDate       = models.DateTimeField(auto_now=True, verbose_name=_('meter.Reading.readDate'), help_text=_('meter.Reading.readDate.helptext'))
+   readDate       = models.DateTimeField(verbose_name=_('meter.Reading.readDate'), help_text=_('meter.Reading.readDate.helptext'))
 
 class History(models.Model):
    '''

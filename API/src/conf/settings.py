@@ -84,10 +84,14 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+DBENGINE=os.getenv('DBENGINE', 'django.db.backends.sqlite3')
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DBENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.path.join(BASE_DIR, os.getenv('DBFILE', 'db.sqlite3')),
+        'ENGINE': DBENGINE,
+        'NAME': os.path.join(BASE_DIR, os.getenv('DBNAME', 'db.sqlite3')) if DBENGINE.endswith('.sqlite3') else os.getenv('DBNAME', 'bluetel'),
+        'USER': os.getenv('DBUSER', 'bluetel'),
+        'PASSWORD': os.getenv('DBPASS', 'leteulb'),
+        'PORT': os.getenv('DBPORT', '5432'),
     }
 }
 
@@ -148,7 +152,7 @@ LOGGING={
       'simple':  { 'format':'%(levelname)s <%(filename)s:%(lineno)d> %(message)s' },
    },
    'handlers': {
-      'console': { 'level': 'DEBUG', 'class': 'logging.StreamHandler', 'formatter': 'simple' },
+      'console': { 'level': os.getenv('loglv', 'DEBUG'), 'class': 'logging.StreamHandler', 'formatter': 'simple' },
    },
    'loggers':{
       'django': {'handlers':['console',], 'propagate': True, 'level': 'WARNING'},

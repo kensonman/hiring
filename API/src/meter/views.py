@@ -3,6 +3,7 @@
 # Date: 2021-12-01 15:55
 # Author: Kenson Man <kenson@kenson.idv.hk>
 # Usage: Provide the view for meter project
+from datetime import datetime
 from django.db import transaction
 from django.shortcuts import render, get_object_or_404 as getObj
 from rest_framework import viewsets
@@ -47,16 +48,30 @@ class ReadingView(APIView):
       return Response(ReadingSerializer(target, many=True).data)
 
    def post(self, req, format=None):
+      raise RuntimeError('Not implemented yet')
+
+   def delete(self, req, format=None):
+      raise RuntimeError('Not implemented yet')
+
+   def put(self, req, format=None):
       data=req.data
       with transaction.atomic():
          #Idempotency check
-         hid=req.header.get('Idempotency-Key', uuid.uuid4())
+         hid=req.headers.get('Idempotency-Key', uuid.uuid4())
+         logger.debug('Idempotency-Key: %s'%hid)
          history=None
          try:
             history=History.objects.get(id=hid)
+            logger.debug('loaded the saved reading')
+            ids=[]
+            ids.append(str(history.stored.id))
+            for ch in Reading.objects.filter(parent=history.stored):
+               ids.append(str(ch.id))
+            logger.info(ids)
+            return Response(ids)
          except History.DoesNotExist:
-            pass
-         history=History(data=data, ipaddr=self.getClientIP(req))#Save the history
+            logger.debug('going to create new reading')
+         history=History(id=hid, data=data, ipaddr=self.getClientIP(req))#Save the history
          history.save()
 
          ids=[]
@@ -70,6 +85,9 @@ class ReadingView(APIView):
          else:
             target.meterType=Reading.METER_GAS
             target.meterPointNumber=data.get('mprn', data.get('mpxn', None))
+         time=data['readDate']
+         if time.endswith('z') or time.endswith('Z'):time=time[:-1]
+         target.readDate=datetime.fromisoformat(time)
          for rd in data['read']:
             if parent:
                target.parent=parent

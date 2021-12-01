@@ -31,8 +31,8 @@ run()
    init
 
    # Startup the testing server
-   echo "Starting the testing server at 0.0.0.0:5000..."
-   python ./manage.py runserver 0.0.0.0:5000
+   echo "Starting the testing server at 0.0.0.0:${PORT} ..."
+   python ./manage.py runserver 0.0.0.0:${PORT}
 }
 
 test()

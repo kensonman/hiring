@@ -39,7 +39,7 @@ class ReadingTestCases(TestCase):
          self.logger.debug(sample)
 
       #Create - The post method is used to create. Returns a list of array that created reading
-      rep=self.factory.post(self.URL, json.dumps(sample), content_type="application/json")
+      rep=self.factory.put(self.URL, json.dumps(sample), content_type="application/json")
       self.logger.debug('Result: %s'%rep.status_code)
       self.logger.debug(rep.data)
       self.assertTrue(200 <= rep.status_code < 300)#Status code
@@ -62,10 +62,10 @@ class ReadingTestCases(TestCase):
 
       #Delete
       #   Not supported
-      Reading.objects.all().delete() #clean up the testing
 
    def test_02_query(self):
       self.logger.info('Testing the query feature...')
+      Reading.objects.all().delete() #clean up the testing
       sample=None
       with open('sample.json', 'r') as fp:
          sample=json.loads(fp.read())
@@ -73,7 +73,7 @@ class ReadingTestCases(TestCase):
          self.logger.debug(sample)
 
       #Create - The post method is used to create. Returns a list of array that created reading
-      rep=self.factory.post(self.URL, json.dumps(sample), content_type="application/json")
+      rep=self.factory.put(self.URL, json.dumps(sample), content_type="application/json")
       self.logger.debug('Result: %s'%rep.status_code)
       self.logger.debug(rep.data)
       self.assertTrue(200 <= rep.status_code < 300)#Status code
@@ -116,4 +116,30 @@ class ReadingTestCases(TestCase):
       self.assertIsInstance(rep.data, list)
       self.assertTrue(len(rep.data)==1)
 
+   def test_03_idempotency(self):
+      self.logger.info('Testing for idempotency...')
+      Reading.objects.all().delete() #clean up the testing
+      sample=None
+      with open('sample.json', 'r') as fp:
+         sample=json.loads(fp.read())
+         self.logger.debug('Sample: ')
+         self.logger.debug(sample)
 
+      #Create - The post method is used to create. Returns a list of array that created reading
+      rep=self.factory.put(self.URL, json.dumps(sample), content_type="application/json", HTTP_IDEMPOTENCY_KEY='abc123')
+      self.logger.debug('Result: %s'%rep.status_code)
+      self.logger.debug(rep.data)
+      self.assertTrue(200 <= rep.status_code < 300)#Status code
+      self.assertIsInstance(rep.data, list)
+      self.assertTrue(len(rep.data)==2)
+      savedId=rep.data
+
+      rep=self.factory.put(self.URL, json.dumps(sample), content_type="application/json", HTTP_IDEMPOTENCY_KEY='abc123')
+      self.logger.debug('Result: %s'%rep.status_code)
+      self.logger.debug(rep.data)
+      self.assertTrue(200 <= rep.status_code < 300)#Status code
+      self.assertIsInstance(rep.data, list)
+      self.assertTrue(len(rep.data)==2)
+      self.logger.debug('saved  : %s'%json.dumps(savedId))
+      self.logger.debug('return : %s'%json.dumps(rep.data))
+      self.assertTrue(json.dumps(rep.data)==json.dumps(savedId))

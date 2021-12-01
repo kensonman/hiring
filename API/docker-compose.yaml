@@ -11,7 +11,7 @@ services:
          - ./src:/usr/src/app:rw
          - logs:/usrc/app/logs:rw
       ports:
-         - 5000:5000
+         - ${PORT}:${PORT}
       working_dir: /usr/src/app
       command: /usr/src/app/start run
 volumes:

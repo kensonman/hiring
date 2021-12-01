@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('readingType', models.CharField(help_text='meter.Reading.readingType.helptext', max_length=20, verbose_name='meter.Reading.readingType')),
                 ('registerId', models.CharField(help_text='meter.Reading.registerId.helptext', max_length=20, verbose_name='meter.Reading.registerId')),
                 ('value', models.IntegerField(help_text='meter.Reading.value.helptext', verbose_name='meter.Reading.value')),
-                ('readDate', models.DateTimeField(auto_now=True, help_text='meter.Reading.readDate.helptext', verbose_name='meter.Reading.readDate')),
+                ('readDate', models.DateTimeField(help_text='meter.Reading.readDate.helptext', verbose_name='meter.Reading.readDate')),
                 ('parent', models.ForeignKey(blank=True, help_text='meter.Reading.parent.helptext', null=True, on_delete=django.db.models.deletion.CASCADE, to='meter.reading', verbose_name='meter.Reading.parent')),
             ],
             options={
