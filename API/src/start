@@ -1,0 +1,68 @@
+#!/bin/bash
+
+
+#Init the environment
+init()
+{
+   echo "Initializes the environment..."
+   # Install the requirements/dependencies
+   pip install -r /usr/src/app/requirements.txt 
+
+   # Initializes the database according to the settings
+   python ./manage.py migrate 
+
+   # Initializes all the static file(s)... It may no be useful in this project, but keep it as a good practice.
+   python ./manage.py collectstatic --noinput 
+}
+
+run()
+{
+   init
+
+   # Startup the testing server
+   echo "Starting the testing server at 0.0.0.0:5000..."
+   python ./manage.py runserver 0.0.0.0:5000
+}
+
+test()
+{
+   init
+
+   # Execute the testing
+   echo "Executing the unit test..."
+   python ./manage.py test
+}
+
+cmd()
+{
+   init
+
+   # Execute the Django management commands
+   python ./manage.py ${*:2}
+}
+
+printhelp()
+{
+   echo "Usage: $0 [action]"
+   echo "   Available actions:"
+   echo "      run   - Execute the testing server"
+   echo "      test  - Execute the unit test"
+   echo "      exec  - Execute the specified Django management command"
+   echo "               e.g.: $0 exec makemigrations meter --empty --name emptyMigrations"
+   echo "      help  - Print this help message"
+}
+
+case "$1" in
+   run)
+      run "$@"
+      ;;
+   test)
+      test "$@"
+      ;;
+   exec)
+      cmd "$@"
+      ;;
+   *)
+      printhelp
+      ;;
+esac

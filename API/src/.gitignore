@@ -1,0 +1,5 @@
+#Ignore the static folder. It should be generated runtime
+/static
+
+#Ignore the database file. It will be generated runtime
+bluetel.sqlite

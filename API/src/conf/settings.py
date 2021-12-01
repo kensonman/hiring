@@ -9,12 +9,14 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
 from pathlib import Path
+import os
+
+# Used to parse the boolean value from env
+TRUE_VALUES=[True, 1, 'TRUE', 'True', 'true', 'YES', 'Yes', 'yes', '1']
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -23,10 +25,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-g3$0v@25p7$dk2r=#)8xz4ahwr%srt)kw7+#+j4n&u1n+-+d2b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True') in TRUE_VALUES
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [ ]
+hosts=os.getenv('ALLOWED_HOSTS', None)
+if hosts: 
+   for host in hosts.split(','):
+      ALLOWED_HOSTS.append(host)
+      print('Added \"%s\" to ALLOWED_HOSTS'%host)
+if os.getenv('ALLOWED_HOST', None): 
+   ALLOWED_HOSTS.append(os.getenv('ALLOWED_HOST', None))
+   print('Added \"%s\" to ALLOWED_HOSTS'%os.getenv('ALLOWED_HOST'))
 
 # Application definition
 
@@ -38,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+INSTALLED_APPS += ['rest_framework', ] #Install the framework and all the dependenices
+INSTALLED_APPS += ['meter',]           #Install the modules that our implemented
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,8 +86,8 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv('DBENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, os.getenv('DBFILE', 'db.sqlite3')),
     }
 }
 
@@ -118,8 +129,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT= 'static'
+MEDIA_URL  = '/media/'
+MEDIA_ROOT = 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# REST framework settings
+REST_FRAMEWORK = {
+}
